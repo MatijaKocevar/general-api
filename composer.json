@@ -7,6 +7,10 @@
         "php": ">=8.1",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "doctrine/doctrine-bundle": "*",
+        "doctrine/doctrine-migrations-bundle": "^3.2",
+        "doctrine/orm": "*",
+        "sensio/framework-extra-bundle": "^6.2",
         "symfony/console": "6.3.*",
         "symfony/dotenv": "6.3.*",
         "symfony/flex": "^2",
@@ -27,7 +31,8 @@
     },
     "autoload": {
         "psr-4": {
-            "App\\": "src/"
+            "App\\": "src/",
+            "Doctrine\\Migrations\\": "src/Migrations/"
         }
     },
     "autoload-dev": {
