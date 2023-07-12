@@ -13,6 +13,15 @@ use Symfony\Component\Routing\Annotation\Route;
 class ScoreController extends AbstractController
 {
     /**
+     * @Route("/", name="home")
+     */
+    public function index()
+    {
+        // Your logic for the homepage
+        return $this->render('default/index.html.twig');
+    }
+
+    /**
      * @Route("/scores", name="scores", methods={"GET"})
      */
     public function scores(ScoreRepository $scoreRepository)
