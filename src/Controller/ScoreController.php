@@ -26,8 +26,8 @@ class ScoreController extends AbstractController
      */
     public function scores(ScoreRepository $scoreRepository)
     {
-        $scores = $scoreRepository->findAll();
-        // $scores = $scoreRepository->findBy([], ['scoreValue' => 'DESC'], 3);
+        // $scores = $scoreRepository->findAll();
+        $scores = $scoreRepository->findBy([], ['scoreValue' => 'DESC']);
 
         // Convert scores to an array or transform them as needed
         $scoreData = [];
