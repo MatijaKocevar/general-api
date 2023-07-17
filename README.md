@@ -1,4 +1,4 @@
-# Project Name
+# Highscore API
 
 This project is a simple API built using PHP Symfony.
 
