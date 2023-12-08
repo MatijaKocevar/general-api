@@ -10,7 +10,7 @@ This project will be a general API for storing and getting data from a MySql dat
 
 To get started with the project, follow these steps:
 
-1. Clone the repository: git clone https://github.com/MatijaKocevar/highscoreAPI.git
+1. Clone the repository: git clone https://github.com/MatijaKocevar/general-api.git
 2. Navigate to the project directory: cd general-api
 3. Install dependencies: composer install
 4. Configure the database connection in the .env file.
