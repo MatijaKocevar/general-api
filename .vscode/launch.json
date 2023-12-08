@@ -10,7 +10,7 @@
             "request": "launch",
             "port": 9003,
             "pathMappings": {
-                "C:\\Users\\Administrator\\Documents\\Projects\\highscoreAPI": "${workspaceFolder}"
+                "/home/mkocevar/Documents/Projects/highscoreAPI": "${workspaceFolder}"
             }
         }
     ]
