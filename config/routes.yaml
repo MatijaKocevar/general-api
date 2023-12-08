@@ -14,3 +14,39 @@ create_score:
   path: /scores
   controller: App\Controller\ScoreController::createScore
   methods: POST
+
+# Task routes
+get_tasks:
+  path: /tasks
+  controller: App\Controller\TaskController::getTasks
+  methods: GET
+
+add_task:
+  path: /tasks
+  controller: App\Controller\TaskController::addTask
+  methods: POST
+
+get_task:
+  path: /tasks/{id}
+  controller: App\Controller\TaskController::getTask
+  methods: GET
+
+update_task:
+  path: /tasks/{id}
+  controller: App\Controller\TaskController::updateTask
+  methods: PUT
+
+delete_task:
+  path: /tasks/{id}
+  controller: App\Controller\TaskController::deleteTask
+  methods: DELETE
+
+search_tasks:
+  path: /tasks-search
+  controller: App\Controller\TaskController::search
+  methods: GET
+
+update_task_status:
+  path: /tasks/{id}/status
+  controller: App\Controller\TaskController::updateTaskStatus
+  methods: POST
