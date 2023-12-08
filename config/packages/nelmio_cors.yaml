@@ -1,16 +1,21 @@
 nelmio_cors:
   defaults:
     allow_credentials: false
-    allow_origin: ["*"]
-    allow_headers: ["*"]
-    allow_methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
+    allow_origin: ['*']
+    allow_headers: ['*']
+    allow_methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
     max_age: 3600
     hosts: []
     origin_regex: false
     forced_allow_origin_value: ~
   paths:
-    "^/scores/":
-      allow_origin: ["*"]
-      allow_headers: ["X-Custom-Auth"]
-      allow_methods: ["POST", "PUT", "GET", "DELETE"]
+    '^/scores/':
+      allow_origin: ['*']
+      allow_headers: ['X-Custom-Auth', 'Content-Type']
+      allow_methods: ['POST', 'PUT', 'GET', 'DELETE', 'OPTIONS']
+      max_age: 3600
+    '^/tasks/':
+      allow_origin: ['*']
+      allow_headers: ['X-Custom-Auth', 'Content-Type']
+      allow_methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
       max_age: 3600
