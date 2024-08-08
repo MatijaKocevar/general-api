@@ -1,0 +1,53 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Install Composer
+        run: |
+          curl -sS https://getcomposer.org/installer | php
+          mv composer.phar /usr/local/bin/composer
+
+      - name: Install dependencies locally
+        run: composer install --no-interaction --prefer-dist --optimize-autoloader
+
+      - name: Configure SSH private key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.PORTFOLIOSERVERSSH }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -t rsa ec2-16-171-32-248.eu-north-1.compute.amazonaws.com >> ~/.ssh/known_hosts
+
+      - name: Remove existing project folder on the server
+        run: |
+          ssh ubuntu@ec2-16-171-32-248.eu-north-1.compute.amazonaws.com "sudo rm -rf /var/projects/general-api"
+
+      - name: Copy project to server
+        run: |
+          scp -r . ubuntu@ec2-16-171-32-248.eu-north-1.compute.amazonaws.com:/var/projects/general-api
+
+      - name: Install Composer dependencies on the server
+        run: |
+          ssh ubuntu@ec2-16-171-32-248.eu-north-1.compute.amazonaws.com "cd /var/projects/general-api && composer install --no-interaction --prefer-dist --optimize-autoloader"
+
+      - name: Update database connection string
+        run: |
+          ssh ubuntu@ec2-16-171-32-248.eu-north-1.compute.amazonaws.com "sed -i 's|DATABASE_URL=.*|DATABASE_URL=${{ secrets.GENERAL_DATABASE_CONNECTION_STRING }}|' /var/projects/general-api/.env.production"
+
+      - name: Check and create database if it doesn't exist
+        run: |
+          ssh ubuntu@ec2-16-171-32-248.eu-north-1.compute.amazonaws.com "cd /var/projects/general-api && php bin/console doctrine:database:create --if-not-exists"
+
+      - name: Run database migrations
+        run: |
+          ssh ubuntu@ec2-16-171-32-248.eu-north-1.compute.amazonaws.com "cd /var/projects/general-api && php bin/console doctrine:migrations:migrate --no-interaction"
