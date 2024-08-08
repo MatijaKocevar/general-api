@@ -24,9 +24,13 @@ jobs:
         run: |
           scp -r * ubuntu@ec2-16-171-32-248.eu-north-1.compute.amazonaws.com:/var/projects/general-api
 
-      - name: Create or update .env and .env.production files
+      - name: Create .env and .env.production files on the server
         run: |
-          echo "APP_ENV=prod" | tee .env .env.production
-          echo "APP_SECRET=${{ secrets.APP_SECRET }}" | tee -a .env .env.production
-          echo "DATABASE_URL=${{ secrets.GENERAL_DATABASE_CONNECTION_STRING }}" | tee -a .env .env.production
-          echo "CORS_ALLOW_ORIGIN='^https?://(localhost|127\.0\.0\.1)(:[0-9]+)?$'" | tee -a .env .env.production
+          ssh ubuntu@ec2-16-171-32-248.eu-north-1.compute.amazonaws.com << 'EOF'
+            echo "APP_ENV=prod" > /var/projects/general-api/.env
+            echo "APP_SECRET=${{ secrets.APP_SECRET }}" >> /var/projects/general-api/.env
+            echo "DATABASE_URL=${{ secrets.GENERAL_DATABASE_CONNECTION_STRING }}" >> /var/projects/general-api/.env
+            echo "CORS_ALLOW_ORIGIN='^https?://(localhost|127\.0\.0\.1)(:[0-9]+)?$'" >> /var/projects/general-api/.env
+
+            cp /var/projects/general-api/.env /var/projects/general-api/.env.production
+          EOF
