@@ -41,3 +41,17 @@ jobs:
             cd /var/projects/general-api
             composer install --no-interaction --prefer-dist --optimize-autoloader
           EOF
+
+      - name: Ensure database exists
+        run: |
+          ssh ubuntu@ec2-16-171-32-248.eu-north-1.compute.amazonaws.com << 'EOF'
+            cd /var/projects/general-api
+            php bin/console doctrine:database:create --if-not-exists
+          EOF
+
+      - name: Run database migrations
+        run: |
+          ssh ubuntu@ec2-16-171-32-248.eu-north-1.compute.amazonaws.com << 'EOF'
+            cd /var/projects/general-api
+            php bin/console doctrine:migrations:migrate --no-interaction
+          EOF
