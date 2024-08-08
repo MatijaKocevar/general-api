@@ -16,10 +16,10 @@ jobs:
       - name: Configure SSH private key
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.PERSONAL_WEBSERVER_KEY }}" > ~/.ssh/id_rsa
+          echo "${{ secrets.PORTFOLIOSERVERSSH }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -t rsa ec2-16-171-32-248.eu-north-1.compute.amazonaws.com >> ~/.ssh/known_hosts
 
       - name: Copy project to server
         run: |
-          scp -r . ubuntu@ec2-16-171-32-248.eu-north-1.compute.amazonaws.com:/var/projects/general-api
+          scp -r * ubuntu@ec2-16-171-32-248.eu-north-1.compute.amazonaws.com:/var/projects/general-api
