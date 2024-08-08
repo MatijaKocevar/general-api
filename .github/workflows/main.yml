@@ -23,3 +23,10 @@ jobs:
       - name: Copy project to server
         run: |
           scp -r * ubuntu@ec2-16-171-32-248.eu-north-1.compute.amazonaws.com:/var/projects/general-api
+
+      - name: Create or update .env and .env.production files
+        run: |
+          echo "APP_ENV=prod" | tee .env .env.production
+          echo "APP_SECRET=${{ secrets.APP_SECRET }}" | tee -a .env .env.production
+          echo "DATABASE_URL=${{ secrets.GENERAL_DATABASE_CONNECTION_STRING }}" | tee -a .env .env.production
+          echo "CORS_ALLOW_ORIGIN='^https?://(localhost|127\.0\.0\.1)(:[0-9]+)?$'" | tee -a .env .env.production
