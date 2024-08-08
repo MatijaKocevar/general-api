@@ -34,3 +34,10 @@ jobs:
 
             cp /var/projects/general-api/.env /var/projects/general-api/.env.production
           EOF
+
+      - name: Install Composer dependencies on the server
+        run: |
+          ssh ubuntu@ec2-16-171-32-248.eu-north-1.compute.amazonaws.com << 'EOF'
+            cd /var/projects/general-api
+            composer install --no-interaction --prefer-dist --optimize-autoloader
+          EOF
