@@ -20,6 +20,10 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -t rsa ec2-16-171-32-248.eu-north-1.compute.amazonaws.com >> ~/.ssh/known_hosts
 
+      - name: Remove existing project files on the server
+        run: |
+          ssh ubuntu@ec2-16-171-32-248.eu-north-1.compute.amazonaws.com "rm -rf /var/projects/general-api/*"
+
       - name: Copy project to server
         run: |
           scp -r * ubuntu@ec2-16-171-32-248.eu-north-1.compute.amazonaws.com:/var/projects/general-api
@@ -54,4 +58,12 @@ jobs:
           ssh ubuntu@ec2-16-171-32-248.eu-north-1.compute.amazonaws.com << 'EOF'
             cd /var/projects/general-api
             php bin/console doctrine:migrations:migrate --no-interaction
+          EOF
+
+      - name: Clear and warm up Symfony cache
+        run: |
+          ssh ubuntu@ec2-16-171-32-248.eu-north-1.compute.amazonaws.com << 'EOF'
+            cd /var/projects/general-api
+            php bin/console cache:clear --env=prod --no-warmup
+            php bin/console cache:warmup --env=prod
           EOF
